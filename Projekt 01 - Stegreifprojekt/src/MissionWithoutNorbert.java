@@ -1,6 +1,8 @@
 
 public class MissionWithoutNorbert {
 	public static void main (String[] args) {
+		
+		// Variablen
 		char norbert = 'O';
 		int compNorbert = 0;
 		int spielerNorbert = 0;
@@ -18,6 +20,7 @@ public class MissionWithoutNorbert {
 		char seitenWahl;
 		int minionsWahl;
 		
+		// Random Minion Wert wird erstellt und wer anfängt
 		randomMinionWert = Math.random();
 		randomAnfangsWert = Math.random();
 		
@@ -29,6 +32,7 @@ public class MissionWithoutNorbert {
 		
 		minionsLinks -= minionsRechts;
 		
+		// Spielfeld wird geprinted
 		if (anfangsWert == 1) {
 			System.out.println("So sieht das aktuelle Spielfeld aus:");
 			
@@ -44,46 +48,59 @@ public class MissionWithoutNorbert {
 			System.out.println("");
 		}
 		
+		// Wiederholung des Spieles bis Norbert ausgewählt wird
 		while (minionsLinks > 0 || minionsRechts > 0) {
 			
+			// Computer ist dran und sein Spielmechanismus
 			if (anfangsWert == 1) {
-				double randomCompMinionWert;
-				double randomCompSeitenWert;
-				
-				long compMinionWert;
-				long compSeitenWert;
-				
-				randomCompMinionWert = Math.random();
-				randomCompMinionWert *= 3;
-				
-				randomCompMinionWert++;
-				compMinionWert = (int)(randomCompMinionWert);
-				
-				randomCompSeitenWert = Math.random();
-				compSeitenWert = Math.round(randomCompSeitenWert);
 				
 				System.out.println("");
-				switch ((int)compSeitenWert) {
-				case 0:
-					minionsRechts -= compMinionWert;
-					leereMinionsRechts += compMinionWert;
-					
-					System.out.println("Computer nimmt " + compMinionWert + " von Rechts");
-					break;
-				case 1:
-					minionsLinks -= compMinionWert;
-					leereMinionsLinks += compMinionWert;
-					
-					System.out.println("Computer nimmt " + compMinionWert + " von Links");
-					break;
-				}
+				
+				// Computer Algorithmus für Spielentscheidung
+				if (minionsRechts >= minionsLinks) {
+					switch((int)minionsRechts)  {
+					case 1:
+						minionsRechts--;
+						System.out.println("Computer nimmt 1 von Rechts");
+						leereMinionsRechts += 1;
+						break;
+					case 2:
+						minionsRechts -= 2;
+						System.out.println("Computer nimmt 2 von Rechts");
+						leereMinionsRechts += 2;
+						break;
+					default:
+						minionsRechts -=3;
+						System.out.println("Computer nimmt 3 von Rechts");
+						leereMinionsRechts += 3;
+						break;
+					}
+				} else if (minionsLinks > minionsRechts){
+					switch(minionsLinks)  {
+					case 1:
+						minionsLinks--;
+						System.out.println("Computer nimmt 1 von Links");
+						leereMinionsLinks += 1;
+						break;
+					case 2:
+						minionsLinks -= 2;
+						System.out.println("Computer nimmt 2 von Links");
+						leereMinionsLinks += 2;
+						break;
+					default:
+						minionsLinks -=3;
+						System.out.println("Computer nimmt 3 von Links");
+						leereMinionsLinks += 3;
+						break;
+					}
+				} 
+				
 				System.out.println("");
 				
+				// Hat jemand Norbert gezogen? Wer hat gewonnen/verloren?
 				if (minionsRechts == 0 && minionsLinks == 0) {
 					spielerNorbert = 1;
-				}
-				
-				if (minionsRechts < 0 || minionsLinks < 0) {
+				} else if (minionsRechts < 0 || minionsLinks < 0) {
 					minionsRechts = 0;
 					minionsLinks = 0;
 					
@@ -96,7 +113,10 @@ public class MissionWithoutNorbert {
 				
 			}
 			
+			// Spieler Spielmechanismus
 			if (anfangsWert == 0) {
+				
+				// Spieler ist dran. Aktuelles Spielfeld wird geprinted.
 				System.out.println("Du bist am Zug.");
 				System.out.println("So sieht das aktuelle Spielfeld aus:");
 				
@@ -118,7 +138,8 @@ public class MissionWithoutNorbert {
 					System.out.print(" -");
 				}
 				System.out.println("");
-			
+				
+				// Spieler entscheidet über seinen Zug
 				System.out.println("Von welcher Seite - l)inks oder r)rechts - willst du wählen?)");
 				
 				seitenWahl = StaticScanner.nextChar();
@@ -132,6 +153,7 @@ public class MissionWithoutNorbert {
 					minionsWahl = StaticScanner.nextInt();
 				}
 				
+				// Eingabe vom Spieler wird verarbeitet
 				switch (seitenWahl) {
 				case 'r':
 					minionsRechts -= minionsWahl;
@@ -146,11 +168,10 @@ public class MissionWithoutNorbert {
 					break;
 				}
 				
+				// Hat jemand Norbert gezogen? Wer hat gewonnen/verloren?
 				if (minionsRechts == 0 && minionsLinks == 0) {
 					compNorbert = 1;
-				}
-				
-				if (minionsRechts < 0 || minionsLinks < 0) {
+				} else if (minionsRechts < 0 || minionsLinks < 0) {
 					minionsRechts = 0;
 					minionsLinks = 0;
 					
@@ -165,6 +186,7 @@ public class MissionWithoutNorbert {
 			
 		}
 		
+		// Wer hat das Spiel verloren?
 		if (spielerNorbert == 1) {
 			System.out.println("Spieler hat Norbert und darum verloren");
 		} else if (compNorbert == 1) {
