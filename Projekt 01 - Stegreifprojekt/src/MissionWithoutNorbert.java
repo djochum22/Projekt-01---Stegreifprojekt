@@ -20,6 +20,31 @@ public class MissionWithoutNorbert {
 		char seitenWahl;
 		int minionsWahl;
 		
+		char antwort;
+		
+		// Spiel Tutorial für neue Spieler
+		System.out.println("Hallo, möchtest du eine kleine Erklärung des Spiels? Tippe 'y' für die Erklärung oder 'n' um das Spiel zu starten!");
+		antwort = StaticScanner.nextChar();
+
+		if (antwort == 'y') {
+			System.out.println("In diesem Spiel geht es darum, ein Team aus Minions zusammenzustellen "
+					+ "– allerdings mit einer entscheidenden");
+			System.out.println("");
+			System.out.println("Regeln: Niemand will Norbert in seinem Team haben, denn er ist bekannt dafür, alles durcheinanderzubringen!");
+	
+		
+			System.out.println("So funktioniert das Spiel: ");
+			System.out.println("Start: Zu Beginn wird Norbert zufällig in eine Gruppe von 10 Minions platziert.");
+			System.out.println("");
+			System.out.println("Auswahl: Sie und der Computer wählen abwechselnd Minions aus, die in Ihr Team kommen. Dabei können Sie entscheiden, ");
+			System.out.println("ob Sie Minions links oder rechts von Norbert nehmen möchten, und wie viele (1, 2 oder 3)");
+			System.out.println("");
+			System.out.println("Es muss mindestens ein Minion ausgewählt werden – auch wenn es Norbert ist!");
+			System.out.println("");
+			System.out.println("Ziel: Die Auswahl endet, wenn alle Minions verteilt sind. Wer am Ende Norbert im Team hat, verliert.");
+			System.out.println("");
+		}
+		
 		// Random Minion Wert wird erstellt und wer anfängt
 		randomMinionWert = Math.random();
 		randomAnfangsWert = Math.random();
@@ -117,7 +142,7 @@ public class MissionWithoutNorbert {
 			if (anfangsWert == 0) {
 				
 				// Spieler ist dran. Aktuelles Spielfeld wird geprinted.
-				System.out.println("Du bist am Zug.");
+				System.out.println("Du bist am Zug");
 				System.out.println("So sieht das aktuelle Spielfeld aus:");
 				
 				for (int i = 0; i < leereMinionsLinks; i++) {
@@ -140,7 +165,7 @@ public class MissionWithoutNorbert {
 				System.out.println("");
 				
 				// Spieler entscheidet über seinen Zug
-				System.out.println("Von welcher Seite - l)inks oder r)rechts - willst du wählen?)");
+				System.out.println("Von welcher Seite - l)inks oder r)echts - willst du wählen?");
 				
 				seitenWahl = StaticScanner.nextChar();
 				
@@ -188,9 +213,10 @@ public class MissionWithoutNorbert {
 		
 		// Wer hat das Spiel verloren?
 		if (spielerNorbert == 1) {
-			System.out.println("Spieler hat Norbert und darum verloren");
+			System.out.println("Du hast Norbert gezogen: Spiel verloren :(");
 		} else if (compNorbert == 1) {
-			System.out.println("Computer hat Norbert und darum veloren");
+			System.out.println("Computer hat Norbert gezogen und darum veloren!");
+			System.out.println("Du hast gewonnen! :)");
 		}
 		
 	}
