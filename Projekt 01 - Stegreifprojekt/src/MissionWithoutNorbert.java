@@ -169,14 +169,11 @@ public class MissionWithoutNorbert {
 				
 				seitenWahl = StaticScanner.nextChar();
 				
-				System.out.println("Wie viele Minions sollen in dein Team? (1 - 3 Minions auswählen)");
-				minionsWahl = StaticScanner.nextInt();
-				
-				if (minionsWahl > 3 || minionsWahl < 1) {
-					System.out.println("Eingabefehler!");
+				// Änderung von Fehler
+				do {
 					System.out.println("Wie viele Minions sollen in dein Team? (1 - 3 Minions auswählen)");
 					minionsWahl = StaticScanner.nextInt();
-				}
+				} while (!(1 <= minionsWahl && minionsWahl <= 3));
 				
 				// Eingabe vom Spieler wird verarbeitet
 				switch (seitenWahl) {
