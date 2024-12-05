@@ -1,21 +1,23 @@
 
 public class MissionWithoutNorbert {
 	public static void main (String[] args) {
-		
+		//Konstante Variablen
+		char NORBERT = 'O';
+		int MINIONS_ANZAHL = 10;
+	
 		// Variablen
-		char norbert = 'O';
-		int compNorbert = 0;
-		int spielerNorbert = 0;
+		boolean spielerZug = false;
+		boolean compNorbert = false;
+		boolean spielerNorbert = false;
 		
-		long minionsRechts = 0;
-		int minionsLinks = 10;
-		int leereMinionsRechts = 0;
-		int leereMinionsLinks = 0;
+		int minionsRechts = 0;
+		int minionsLinks = 0;
+		int norbertPosition = 0;
 		
-		double randomMinionWert;
-		double randomAnfangsWert;
+		int spielerTeam = 0;
+		int computerTeam = 0;
 		
-		long anfangsWert;
+		double randomWert;
 		
 		char seitenWahl;
 		int minionsWahl;
@@ -23,15 +25,16 @@ public class MissionWithoutNorbert {
 		char antwort;
 		
 		// Spiel Tutorial für neue Spieler
-		System.out.println("Hallo, möchtest du eine kleine Erklärung des Spiels? Tippe 'y' für die Erklärung oder 'n' um das Spiel zu starten!");
-		antwort = StaticScanner.nextChar();
-
+		do {
+			System.out.println("Hallo, möchtest du eine kleine Erklärung des Spiels? Tippe 'y' für die Erklärung oder 'n' um das Spiel zu starten!");
+			antwort = StaticScanner.nextChar();
+		} while (!(antwort == 'y' || antwort == 'n'));
+		
 		if (antwort == 'y') {
 			System.out.println("In diesem Spiel geht es darum, ein Team aus Minions zusammenzustellen "
 					+ "– allerdings mit einer entscheidenden");
 			System.out.println("");
 			System.out.println("Regeln: Niemand will Norbert in seinem Team haben, denn er ist bekannt dafür, alles durcheinanderzubringen!");
-	
 		
 			System.out.println("So funktioniert das Spiel: ");
 			System.out.println("Start: Zu Beginn wird Norbert zufällig in eine Gruppe von 10 Minions platziert.");
@@ -46,176 +49,151 @@ public class MissionWithoutNorbert {
 		}
 		
 		// Random Minion Wert wird erstellt und wer anfängt
-		randomMinionWert = Math.random();
-		randomAnfangsWert = Math.random();
+		randomWert = Math.random();
 		
-		randomMinionWert *= 10;
-		randomMinionWert++;
+		if (randomWert < 0.5) spielerZug = true;
 		
-		minionsRechts = Math.round(randomMinionWert);
-		anfangsWert = Math.round(randomAnfangsWert);
+		minionsRechts = (int)((randomWert * MINIONS_ANZAHL) + 1);
 		
-		minionsLinks -= minionsRechts;
+		minionsLinks = MINIONS_ANZAHL - minionsRechts;
+		
+		norbertPosition = minionsLinks + 1;
 		
 		// Spielfeld wird geprinted
-		if (anfangsWert == 1) {
+		if (!spielerZug) {
 			System.out.println("So sieht das aktuelle Spielfeld aus:");
 			
-			for (int i = 0; i < minionsLinks; i++) {
+			for (int i = 0; i < minionsLinks; i++) 
 				System.out.print("M ");
-			}
 			
-			System.out.print(norbert);
+			System.out.print(NORBERT);
 			
-			for (int i = 0; i < minionsRechts; i++) {
+			for (int i = 0; i < minionsRechts; i++) 
 				System.out.print(" M");
-			}
+
 			System.out.println("");
 		}
 		
-		// Wiederholung des Spieles bis Norbert ausgewählt wird
-		while (minionsLinks > 0 || minionsRechts > 0) {
+		// Wiederholung des Spieles bis Norbert ausgewählt wird 
+		do {
 			
 			// Computer ist dran und sein Spielmechanismus
-			if (anfangsWert == 1) {
+			if (!spielerZug) {
 				
 				System.out.println("");
 				
 				// Computer Algorithmus für Spielentscheidung
 				if (minionsRechts >= minionsLinks) {
-					switch((int)minionsRechts)  {
-					case 1:
-						minionsRechts--;
-						System.out.println("Computer nimmt 1 von Rechts");
-						leereMinionsRechts += 1;
-						break;
-					case 2:
-						minionsRechts -= 2;
-						System.out.println("Computer nimmt 2 von Rechts");
-						leereMinionsRechts += 2;
-						break;
-					default:
-						minionsRechts -=3;
+					if (minionsRechts < 3) {
+						System.out.println("Computer nimmt " + minionsRechts + " von Rechts");
+						computerTeam += minionsRechts;
+						minionsRechts = 0;
+					} else {
+						minionsRechts -= 3;
+						computerTeam += 3;
 						System.out.println("Computer nimmt 3 von Rechts");
-						leereMinionsRechts += 3;
-						break;
 					}
-				} else if (minionsLinks > minionsRechts){
-					switch(minionsLinks)  {
-					case 1:
-						minionsLinks--;
-						System.out.println("Computer nimmt 1 von Links");
-						leereMinionsLinks += 1;
-						break;
-					case 2:
-						minionsLinks -= 2;
-						System.out.println("Computer nimmt 2 von Links");
-						leereMinionsLinks += 2;
-						break;
-					default:
-						minionsLinks -=3;
+					
+				} else if (minionsRechts < minionsLinks) {
+					if (minionsLinks < 3) {
+						System.out.println("Computer nimmt " + minionsLinks + " von Links");
+						computerTeam += minionsLinks;
+						minionsLinks = 0;
+					} else {
+						minionsLinks -= 3;
+						computerTeam += 3;
 						System.out.println("Computer nimmt 3 von Links");
-						leereMinionsLinks += 3;
-						break;
 					}
+					
 				} 
 				
 				System.out.println("");
 				
-				// Hat jemand Norbert gezogen? Wer hat gewonnen/verloren?
-				if (minionsRechts == 0 && minionsLinks == 0) {
-					spielerNorbert = 1;
-				} else if (minionsRechts < 0 || minionsLinks < 0) {
-					minionsRechts = 0;
-					minionsLinks = 0;
-					
-					compNorbert = 1;
-				}
-				
-				if (compNorbert == 0) {
-					anfangsWert = 0;
-				}
-				
+				// Gibt es noch Minions zur Auswahl/ Ansonsten Spieler ist dran
+				if (minionsRechts == 0 && minionsLinks == 0) 
+					spielerNorbert = true;
+				else
+					spielerZug = true;
 			}
 			
 			// Spieler Spielmechanismus
-			if (anfangsWert == 0) {
+			if (spielerZug) {
 				
 				// Spieler ist dran. Aktuelles Spielfeld wird geprinted.
 				System.out.println("Du bist am Zug");
+				System.out.println("");
 				System.out.println("So sieht das aktuelle Spielfeld aus:");
 				
-				for (int i = 0; i < leereMinionsLinks; i++) {
+				for (int i = 0; i < (norbertPosition - (minionsLinks + 1)); i++) 
 					System.out.print("- ");
-				}
 				
-				for (int i = 0; i < minionsLinks; i++) {
+				for (int i = 0; i < minionsLinks; i++) 
 					System.out.print("M ");
-				}
 				
-				System.out.print(norbert);
+				System.out.print(NORBERT);
 				
-				for (int i = 0; i < minionsRechts; i++) {
+				for (int i = 0; i < minionsRechts; i++) 
 					System.out.print(" M");
-				}
 				
-				for (int i = 0; i < leereMinionsRechts; i++) {
+				for (int i = 0; i < (MINIONS_ANZAHL - (norbertPosition + minionsRechts - 1)); i++) 
 					System.out.print(" -");
-				}
+				
+				System.out.println("");
 				System.out.println("");
 				
 				// Spieler entscheidet über seinen Zug
-				System.out.println("Von welcher Seite - l)inks oder r)echts - willst du wählen?");
+				do {
+					System.out.println("Von welcher Seite - l)inks oder r)echts - willst du wählen?");
+					seitenWahl = StaticScanner.nextChar();
+				} while (!(seitenWahl == 'r' || seitenWahl == 'l'));
 				
-				seitenWahl = StaticScanner.nextChar();
-				
-				// Änderung von Fehler
 				do {
 					System.out.println("Wie viele Minions sollen in dein Team? (1 - 3 Minions auswählen)");
 					minionsWahl = StaticScanner.nextInt();
 				} while (!(1 <= minionsWahl && minionsWahl <= 3));
 				
+				spielerTeam += minionsWahl;
+				
 				// Eingabe vom Spieler wird verarbeitet
 				switch (seitenWahl) {
 				case 'r':
 					minionsRechts -= minionsWahl;
-					leereMinionsRechts += minionsWahl;
+					
+					if (minionsRechts < 0) spielerTeam += minionsRechts;
+					
 					break;
 				case 'l':
 					minionsLinks -= minionsWahl;
-					leereMinionsLinks += minionsWahl;
-					break;
-				default:
-					System.out.println("bitte wähle von r und l");
-					break;
-				}
-				
-				// Hat jemand Norbert gezogen? Wer hat gewonnen/verloren?
-				if (minionsRechts == 0 && minionsLinks == 0) {
-					compNorbert = 1;
-				} else if (minionsRechts < 0 || minionsLinks < 0) {
-					minionsRechts = 0;
-					minionsLinks = 0;
 					
-					spielerNorbert = 1;
+					if (minionsLinks < 0) spielerTeam += minionsLinks;
+					
+					break;
 				}
 				
-				anfangsWert = 1;
-				
+				// Gibt es noch Minions zur Auswahl/ Hat der Spieler Norbert gezogen/ Ansonsten Computer ist dran
+				if (minionsRechts <= 0 && minionsLinks <= 0) 
+					compNorbert = true;
+				else if (minionsRechts < 0 || minionsLinks < 0)
+					spielerNorbert = true;
+				else 
+					spielerZug = false;
+			
 				System.out.println("");
-				
 			}
 			
-		}
+			System.out.println("Du hast " + spielerTeam + " Minions in deinem Team");
+			System.out.println("Der Computer hat " + computerTeam + " in seinem Team");
+			System.out.println("");
+		} while (minionsLinks > 0 || minionsRechts > 0);
 		
 		// Wer hat das Spiel verloren?
-		if (spielerNorbert == 1) {
+		if (spielerNorbert == true) {
 			System.out.println("Du hast Norbert gezogen: Spiel verloren :(");
-		} else if (compNorbert == 1) {
+		} else if (compNorbert == true) {
 			System.out.println("Computer hat Norbert gezogen und darum veloren!");
 			System.out.println("Du hast gewonnen! :)");
 		}
 		
-	}
+	} 
 	
-}
+} 
