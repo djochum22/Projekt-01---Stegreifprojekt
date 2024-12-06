@@ -17,8 +17,6 @@ public class MissionWithoutNorbert {
 		int spielerTeam = 0;
 		int computerTeam = 0;
 		
-		double randomWert;
-		
 		char seitenWahl;
 		int minionsWahl;
 		
@@ -49,11 +47,9 @@ public class MissionWithoutNorbert {
 		}
 		
 		// Random Minion Wert wird erstellt und wer anfängt
-		randomWert = Math.random();
+		if (Math.random() < 0.5) spielerZug = true;
 		
-		if (randomWert < 0.5) spielerZug = true;
-		
-		minionsRechts = (int)((randomWert * MINIONS_ANZAHL) + 1);
+		minionsRechts = (int)((Math.random() * MINIONS_ANZAHL) + 1);
 		
 		minionsLinks = MINIONS_ANZAHL - minionsRechts;
 		
@@ -164,7 +160,7 @@ public class MissionWithoutNorbert {
 			System.out.println("Du hast " + spielerTeam + " Minions in deinem Team");
 			System.out.println("Der Computer hat " + computerTeam + " in seinem Team");
 			System.out.println("");
-		} while (minionsLinks > 0 || minionsRechts > 0);
+		} while (!(spielerNorbert == true || compNorbert == true));
 		
 		// Wer hat das Spiel verloren?
 		if (spielerNorbert == true) {
