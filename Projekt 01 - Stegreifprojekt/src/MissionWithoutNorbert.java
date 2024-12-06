@@ -3,6 +3,7 @@ public class MissionWithoutNorbert {
 		//Konstante Variablen
 		final char NORBERT = 'O';
 		final int MINIONS_ANZAHL = 10;
+		final int MINIONS_UND_NORBERT = 11;
 	
 		// Variablen
 		boolean spielerZug = false;
@@ -58,7 +59,7 @@ public class MissionWithoutNorbert {
 		
 		// Spielfeld wird geprinted
 		if (!spielerZug) {
-			reiheAusgabe(norbertPosition, minionsLinks, minionsRechts, NORBERT);
+			reiheAusgabe(norbertPosition, minionsLinks, minionsRechts, NORBERT, MINIONS_UND_NORBERT);
 		}
 		
 		// Wiederholung des Spieles bis Norbert ausgewählt wird 
@@ -112,7 +113,7 @@ public class MissionWithoutNorbert {
 				System.out.println("Du bist am Zug");
 				System.out.println("");
 				
-				reiheAusgabe(norbertPosition, minionsLinks, minionsRechts, NORBERT);
+				reiheAusgabe(norbertPosition, minionsLinks, minionsRechts, NORBERT, MINIONS_UND_NORBERT);
 				
 				System.out.println("");
 				
@@ -146,7 +147,7 @@ public class MissionWithoutNorbert {
 				}
 				
 				// Gibt es noch Minions zur Auswahl/ Hat der Spieler Norbert gezogen/ Ansonsten Computer ist dran
-				if (minionsRechts <= 0 && minionsLinks <= 0) 
+				if (minionsRechts == 0 && minionsLinks == 0) 
 					compNorbert = true;
 				else if (minionsRechts < 0 || minionsLinks < 0)
 					spielerNorbert = true;
@@ -171,12 +172,12 @@ public class MissionWithoutNorbert {
 		
 	} 
 	
-	public static void reiheAusgabe (int norbertPosition, int minionsLinks, int minionsRechts, char NORBERT) {
+	public static void reiheAusgabe (int norbertPosition, int minionsLinks, int minionsRechts, final char NORBERT, final int MINIONS_UND_NORBERT) {
 		System.out.println("So sieht das aktuelle Spielfeld aus:");
 		
 		final int LEERE_MINIONS_LINKS = norbertPosition - (minionsLinks + 1);
 		
-		for (int i = 1; i <= 11; i++) {
+		for (int i = 1; i <= MINIONS_UND_NORBERT; i++) {
 			if (i <= LEERE_MINIONS_LINKS) 
 				System.out.print("- ");
 			else if (i <= minionsLinks + LEERE_MINIONS_LINKS && i > LEERE_MINIONS_LINKS) 
