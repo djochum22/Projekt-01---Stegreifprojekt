@@ -2,8 +2,8 @@
 public class MissionWithoutNorbert {
 	public static void main (String[] args) {
 		//Konstante Variablen
-		char NORBERT = 'O';
-		int MINIONS_ANZAHL = 10;
+		final char NORBERT = 'O';
+		final int MINIONS_ANZAHL = 10;
 	
 		// Variablen
 		boolean spielerZug = false;
@@ -59,19 +59,11 @@ public class MissionWithoutNorbert {
 		
 		norbertPosition = minionsLinks + 1;
 		
+		System.out.println("");
+		
 		// Spielfeld wird geprinted
 		if (!spielerZug) {
-			System.out.println("So sieht das aktuelle Spielfeld aus:");
-			
-			for (int i = 0; i < minionsLinks; i++) 
-				System.out.print("M ");
-			
-			System.out.print(NORBERT);
-			
-			for (int i = 0; i < minionsRechts; i++) 
-				System.out.print(" M");
-
-			System.out.println("");
+			reiheAusgabe(norbertPosition, minionsLinks, minionsRechts, NORBERT);
 		}
 		
 		// Wiederholung des Spieles bis Norbert ausgewählt wird 
@@ -80,6 +72,8 @@ public class MissionWithoutNorbert {
 			// Computer ist dran und sein Spielmechanismus
 			if (!spielerZug) {
 				
+				System.out.println("");
+				System.out.println("Computer ist dran");
 				System.out.println("");
 				
 				// Computer Algorithmus für Spielentscheidung
@@ -122,23 +116,9 @@ public class MissionWithoutNorbert {
 				// Spieler ist dran. Aktuelles Spielfeld wird geprinted.
 				System.out.println("Du bist am Zug");
 				System.out.println("");
-				System.out.println("So sieht das aktuelle Spielfeld aus:");
 				
-				for (int i = 0; i < (norbertPosition - (minionsLinks + 1)); i++) 
-					System.out.print("- ");
+				reiheAusgabe(norbertPosition, minionsLinks, minionsRechts, NORBERT);
 				
-				for (int i = 0; i < minionsLinks; i++) 
-					System.out.print("M ");
-				
-				System.out.print(NORBERT);
-				
-				for (int i = 0; i < minionsRechts; i++) 
-					System.out.print(" M");
-				
-				for (int i = 0; i < (MINIONS_ANZAHL - (norbertPosition + minionsRechts - 1)); i++) 
-					System.out.print(" -");
-				
-				System.out.println("");
 				System.out.println("");
 				
 				// Spieler entscheidet über seinen Zug
@@ -195,5 +175,26 @@ public class MissionWithoutNorbert {
 		}
 		
 	} 
+	
+	public static void reiheAusgabe (int norbertPosition, int minionsLinks, int minionsRechts, char NORBERT) {
+		System.out.println("So sieht das aktuelle Spielfeld aus:");
+		
+		final int LEERE_MINIONS_LINKS = norbertPosition - (minionsLinks + 1);
+		
+		for (int i = 1; i <= 11; i++) {
+			if (i <= LEERE_MINIONS_LINKS) 
+				System.out.print("- ");
+			else if (i <= minionsLinks + LEERE_MINIONS_LINKS && i > LEERE_MINIONS_LINKS) 
+				System.out.print("M ");
+			else if (i == norbertPosition) 
+				System.out.print(NORBERT);
+			else if (i <= (minionsRechts + norbertPosition) && i > norbertPosition) 
+				System.out.print(" M");
+			else 
+				System.out.print(" -");
+		}
+		
+		System.out.println("");
+	}
 	
 } 
